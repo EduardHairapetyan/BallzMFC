@@ -54,6 +54,7 @@ CBallzMFCDlg::CBallzMFCDlg(CWnd* pParent /*=nullptr*/)
 	: CDialogEx(IDD_BALLZMFC_DIALOG, pParent)
 {
 	m_hIcon = AfxGetApp()->LoadIcon(IDR_MAINFRAME);
+	m_BallColor = RGB(255, 0, 0);
 }
 
 void CBallzMFCDlg::DoDataExchange(CDataExchange* pDX)
@@ -121,8 +122,18 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 		// Check if ball bounces from top and hasn't bounced from the slider
 		if (m_BallRect.top <= clientRect.top)
 		{
+			if (!ballBouncedFromSlider)
+			{
+				// Game over condition
+				KillTimer(m_TimerID); // Stop the game timer
+				MessageBox(_T("Game Over!"), _T("BallzMFC"), MB_OK | MB_ICONINFORMATION);
+				return; // Exit the timer event
+			}
+			else
+			{
 				m_SpeedY = -m_SpeedY; // Reverse Y direction if it bounced from the slider
 				ballBouncedFromSlider = false; // Reset flag after bouncing from top
+			}
 		}
 
 		// Check for collision with the bottom
@@ -146,7 +157,8 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 			{
 				if (!((m_BallRect.right + m_BallRect.left) / 2 >= thumbRect.left &&
 					(m_BallRect.right + m_BallRect.left) / 2 <= thumbRect.right))
-				{// Game over condition
+				{
+					// Game over condition
 					KillTimer(m_TimerID); // Stop the game timer
 					MessageBox(_T("Game Over!"), _T("BallzMFC"), MB_OK | MB_ICONINFORMATION);
 					return; // Exit the timer event
@@ -154,6 +166,9 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 				// Ball has touched the bottom of the slider, reverse Y direction
 				m_SpeedY = -m_SpeedY;
 				ballBouncedFromSlider = true; // Set flag that ball has bounced from the slider
+
+				// Change ball color when touching the slider
+				m_BallColor = RGB((char)rand(), (char)rand(), (char)rand()); // Change to green or any color of your choice
 
 				// Move the ball below the slider to avoid multiple hits
 				m_BallRect.OffsetRect(0, 10);
@@ -220,7 +235,7 @@ void CBallzMFCDlg::OnPaint()
 	memDC.FillSolidRect(&clientRect, RGB(255, 255, 255));  // White background
 
 	// Set up the brush and pen for the ball
-	CBrush ballBrush(RGB(255, 0, 0));  // Red ball
+	CBrush ballBrush(m_BallColor);  // Use current ball color
 	CBrush* pOldBrush = memDC.SelectObject(&ballBrush);
 
 	// Draw the ball in the memory DC
@@ -233,8 +248,6 @@ void CBallzMFCDlg::OnPaint()
 	memDC.SelectObject(pOldBrush);
 	memDC.SelectObject(pOldBitmap);
 }
-
-
 
 
 

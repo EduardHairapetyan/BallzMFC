@@ -39,7 +39,10 @@ protected:
     afx_msg void OnPaint();
     afx_msg HCURSOR OnQueryDragIcon();
     DECLARE_MESSAGE_MAP()
+    // In BallzMFCDlg.h
+
 public:
+    int m_BallColor; // Member variable to store ball color
     afx_msg void OnNMCustomdrawSlider3(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnDeltaposSpin1(NMHDR* pNMHDR, LRESULT* pResult);
     afx_msg void OnNMThemeChangedScrollbar1(NMHDR* pNMHDR, LRESULT* pResult);
