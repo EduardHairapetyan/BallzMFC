@@ -87,7 +87,7 @@ BOOL CBallzMFCDlg::OnInitDialog()
 	m_TimerID = SetTimer(1, 16, nullptr);
 
 	// Create the custom slider
-	CRect sliderRect(0, 10, 470, 30); // Example size and position
+	CRect sliderRect(0, 10, 480, 30); // Example size and position
 	m_Slider.Create(nullptr, _T("Slider"), WS_CHILD | WS_VISIBLE | WS_BORDER, sliderRect, this, 1001);
 	m_Slider.SetRange(0, 100);
 	m_Slider.SetPos(50);
@@ -121,18 +121,8 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 		// Check if ball bounces from top and hasn't bounced from the slider
 		if (m_BallRect.top <= clientRect.top)
 		{
-			if (!ballBouncedFromSlider)
-			{
-				// Game over condition
-				KillTimer(m_TimerID); // Stop the game timer
-				MessageBox(_T("Game Over!"), _T("BallzMFC"), MB_OK | MB_ICONINFORMATION);
-				return; // Exit the timer event
-			}
-			else
-			{
 				m_SpeedY = -m_SpeedY; // Reverse Y direction if it bounced from the slider
 				ballBouncedFromSlider = false; // Reset flag after bouncing from top
-			}
 		}
 
 		// Check for collision with the bottom
@@ -152,10 +142,15 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 			m_Slider.GetThumbRect(thumbRect);  // Get the slider's thumb position and size
 
 			// Check if the ball is hitting the thumb of the slider
-			if (m_BallRect.top <= thumbRect.bottom &&
-				(m_BallRect.right + m_BallRect.left) / 2 >= thumbRect.left &&
-				(m_BallRect.right + m_BallRect.left) / 2 <= thumbRect.right)
+			if (m_BallRect.top <= thumbRect.bottom)
 			{
+				if (!((m_BallRect.right + m_BallRect.left) / 2 >= thumbRect.left &&
+					(m_BallRect.right + m_BallRect.left) / 2 <= thumbRect.right))
+				{// Game over condition
+					KillTimer(m_TimerID); // Stop the game timer
+					MessageBox(_T("Game Over!"), _T("BallzMFC"), MB_OK | MB_ICONINFORMATION);
+					return; // Exit the timer event
+				}
 				// Ball has touched the bottom of the slider, reverse Y direction
 				m_SpeedY = -m_SpeedY;
 				ballBouncedFromSlider = true; // Set flag that ball has bounced from the slider
