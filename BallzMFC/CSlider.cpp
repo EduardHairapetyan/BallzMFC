@@ -6,17 +6,17 @@
 const int THUMB_WIDTH = 80;
 const int THUMB_HEIGHT = 20;
 
-CMyCustomSlider::CMyCustomSlider()
+CSlider::CSlider()
     : m_minRange(0), m_maxRange(100), m_pos(0), m_thumbWidth(20), m_thumbHeight(20)
 {
 }
 
-void CMyCustomSlider::PreSubclassWindow()
+void CSlider::PreSubclassWindow()
 {
     CWnd::PreSubclassWindow();
 }
 
-void CMyCustomSlider::OnPaint()
+void CSlider::OnPaint()
 {
     CPaintDC dc(this);
     CBrush brush(RGB(0, 0, 255)); // Blue thumb
@@ -24,7 +24,7 @@ void CMyCustomSlider::OnPaint()
     dc.Rectangle(m_thumbRect);
 }
 
-void CMyCustomSlider::OnMouseMove(UINT nFlags, CPoint point)
+void CSlider::OnMouseMove(UINT nFlags, CPoint point)
 {
     if (nFlags & MK_LBUTTON)
     {
@@ -41,7 +41,7 @@ void CMyCustomSlider::OnMouseMove(UINT nFlags, CPoint point)
 }
 
 
-void CMyCustomSlider::OnLButtonDown(UINT nFlags, CPoint point)
+void CSlider::OnLButtonDown(UINT nFlags, CPoint point)
 {
     CWnd::OnLButtonDown(nFlags, point);
     // Check if the mouse click is within the thumb's rectangle
@@ -51,13 +51,13 @@ void CMyCustomSlider::OnLButtonDown(UINT nFlags, CPoint point)
     }
 }
 
-void CMyCustomSlider::OnLButtonUp(UINT nFlags, CPoint point)
+void CSlider::OnLButtonUp(UINT nFlags, CPoint point)
 {
     ReleaseCapture(); // Release mouse capture
     CWnd::OnLButtonUp(nFlags, point);
 }
 
-void CMyCustomSlider::SetRange(int min, int max)
+void CSlider::SetRange(int min, int max)
 {
     m_minRange = min;
     m_maxRange = max;
@@ -66,7 +66,7 @@ void CMyCustomSlider::SetRange(int min, int max)
 }
 
 
-void CMyCustomSlider::SetPos(int pos)
+void CSlider::SetPos(int pos)
 {
     if (pos < m_minRange) pos = m_minRange;
     if (pos > m_maxRange) pos = m_maxRange;
@@ -75,14 +75,14 @@ void CMyCustomSlider::SetPos(int pos)
     Invalidate();
 }
 
-int CMyCustomSlider::GetPos() const
+int CSlider::GetPos() const
 {
     return m_pos;
 }
 
 // In CSlider.cpp
 
-void CMyCustomSlider::GetThumbRect(CRect& thumbRect)
+void CSlider::GetThumbRect(CRect& thumbRect)
 {
     // Get the slider's client rectangle (control's total dimensions)
     CRect clientRect;
@@ -98,7 +98,7 @@ void CMyCustomSlider::GetThumbRect(CRect& thumbRect)
     thumbRect.bottom = m_thumbHeight;
 }
 
-void CMyCustomSlider::UpdateThumbRect()
+void CSlider::UpdateThumbRect()
 {
     CRect thumbRect;
     GetThumbRect(thumbRect);
@@ -107,7 +107,7 @@ void CMyCustomSlider::UpdateThumbRect()
     m_thumbRect = thumbRect;
 }
 
-void CMyCustomSlider::SetThumbSize(int width, int height)
+void CSlider::SetThumbSize(int width, int height)
 {
     m_thumbWidth = width;
     m_thumbHeight = height;
@@ -116,7 +116,7 @@ void CMyCustomSlider::SetThumbSize(int width, int height)
 }
 
 
-BEGIN_MESSAGE_MAP(CMyCustomSlider, CWnd)
+BEGIN_MESSAGE_MAP(CSlider, CWnd)
     ON_WM_PAINT()
     ON_WM_MOUSEMOVE()
     ON_WM_LBUTTONDOWN()

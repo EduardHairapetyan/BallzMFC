@@ -2,10 +2,10 @@
 #include "pch.h"
 #include <afxwin.h>
 
-class CMyCustomSlider : public CWnd
+class CSlider : public CWnd
 {
 public:
-    CMyCustomSlider();
+    CSlider();
 
     void SetRange(int min, int max);
     void SetPos(int pos);

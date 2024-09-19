@@ -172,11 +172,18 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 				UpdateScoreDisplay();
 				ballBouncedFromSlider = true; // Set flag that ball has bounced from the slider
 				
+				//Set seed for randomization
 				srand(time(0));
 
 				// Change ball color when touching the slider
-				m_BallColor = RGB((char)rand(), (char)rand(), (char)rand()); // Chango green or any color of your choice
-
+				char red = (char)rand();
+				char green = (char)rand();
+				char blue = (char)rand();
+				
+				//Check is ball collor is not while(it will not be seen)
+				if (red != 256 && green != 256 && blue != 256) {
+					m_BallColor = RGB(red, green, blue); // Chango green or any color of your choice
+				}
 				// Move the ball below the slider to avoid multiple hits
 				m_BallRect.OffsetRect(0, 10);
 			}

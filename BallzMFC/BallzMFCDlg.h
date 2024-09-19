@@ -26,7 +26,7 @@ protected:
     int m_BallRadius;
     int m_SpeedX;
     int m_SpeedY;
-    CMyCustomSlider m_Slider;
+    CSlider m_Slider;
 
     // Slider control for bounce effect
     CSliderCtrl m_SliderBounce;
