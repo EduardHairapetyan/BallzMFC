@@ -181,7 +181,7 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 				char blue = (char)rand();
 				
 				//Check is ball collor is not while(it will not be seen)
-				if (red != 256 && green != 256 && blue != 256) {
+				if (red != 255 && green != 255 && blue != 255) {
 					m_BallColor = RGB(red, green, blue); // Chango green or any color of your choice
 				}
 				// Move the ball below the slider to avoid multiple hits
