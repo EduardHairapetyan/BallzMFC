@@ -83,6 +83,7 @@ BOOL CBallzMFCDlg::OnInitDialog()
 	m_BallRect.SetRect(50, 50, 50 + m_BallRadius * 2, 50 + m_BallRadius * 2);
 	m_SpeedX = 5;
 	m_SpeedY = 4;
+	score = 0;
 
 	// Set up the timer for ball movement
 	m_TimerID = SetTimer(1, 16, nullptr);
@@ -93,6 +94,7 @@ BOOL CBallzMFCDlg::OnInitDialog()
 	m_Slider.SetRange(0, 100);
 	m_Slider.SetPos(50);
 	m_Slider.SetThumbSize(80, 20);
+	UpdateScoreDisplay();
 
 	return TRUE;
 }
@@ -163,12 +165,17 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 					MessageBox(_T("Game Over!"), _T("BallzMFC"), MB_OK | MB_ICONINFORMATION);
 					return; // Exit the timer event
 				}
+
 				// Ball has touched the bottom of the slider, reverse Y direction
 				m_SpeedY = -m_SpeedY;
+				score++;
+				UpdateScoreDisplay();
 				ballBouncedFromSlider = true; // Set flag that ball has bounced from the slider
+				
+				srand(time(0));
 
 				// Change ball color when touching the slider
-				m_BallColor = RGB((char)rand(), (char)rand(), (char)rand()); // Change to green or any color of your choice
+				m_BallColor = RGB((char)rand(), (char)rand(), (char)rand()); // Chango green or any color of your choice
 
 				// Move the ball below the slider to avoid multiple hits
 				m_BallRect.OffsetRect(0, 10);
@@ -181,6 +188,19 @@ void CBallzMFCDlg::OnTimer(UINT_PTR nIDEvent)
 
 	CDialogEx::OnTimer(nIDEvent);
 }
+
+void CBallzMFCDlg::UpdateScoreDisplay()
+{
+	CString scoreText;
+	scoreText.Format(_T("Score: %d"), score);
+
+	// Option 1: Set window title
+	SetWindowText(scoreText);
+
+	// Option 2: Update a static text control if you are using one
+	// GetDlgItem(IDC_STATIC_SCORE)->SetWindowText(scoreText);
+}
+
 
 // BallzMFCDlg.cpp
 void CBallzMFCDlg::OnDestroy()

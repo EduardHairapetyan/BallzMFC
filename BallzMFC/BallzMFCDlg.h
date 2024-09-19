@@ -30,10 +30,12 @@ protected:
 
     // Slider control for bounce effect
     CSliderCtrl m_SliderBounce;
+    int score;
 
     // Generated message map functions
     virtual BOOL OnInitDialog();
     afx_msg void OnTimer(UINT_PTR nIDEvent);
+    afx_msg void UpdateScoreDisplay();
     afx_msg void OnDestroy();
     afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
     afx_msg void OnPaint();
